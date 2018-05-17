@@ -1,0 +1,6 @@
+log/
+pkg/
+.idea/
+*.exe
+*.exe~
+*___jb_tmp___
