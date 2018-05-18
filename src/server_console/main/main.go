@@ -1,11 +1,13 @@
 package main
 
 import(
-	"flag"
-	"lib/public_config"
 	"server_console/conf"
 	"lib/common"
 	"github.com/astaxie/beego"
+	"flag"
+	"lib/public_config"
+	"lib/db"
+	"server_console/admin"
 )
 
 func InitLog()  {
@@ -26,5 +28,9 @@ func main()  {
 	InitLog()
 
 	db.InitRedis(public_config.GetCfgRedis().Address, public_config.GetCfgRedis().Password)
+
+	common.LoadDrawCardRate()
+
+	admin.InitCenterSvr()
 
 }

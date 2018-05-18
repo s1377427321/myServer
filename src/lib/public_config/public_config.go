@@ -41,7 +41,8 @@ type PublicConfig struct{
 	
 }
 
-var opt *PublicConfig
+var opts *PublicConfig
+
 
 func ParseToml(file string) error  {
 	if _,err := os.Stat(file);os.IsNotExist(err){
@@ -49,13 +50,44 @@ func ParseToml(file string) error  {
 		return nil
 	}
 
-	opt = &PublicConfig{}
+	opts = &PublicConfig{}
 
-	_,err :=toml.DecodeFile(file,opt)
+	_,err :=toml.DecodeFile(file,opts)
 	if err != nil{
 		beego.Error(err)
 		return err
 	}
 
 	return  nil
+}
+
+// Opts 获取配置
+func Opts() *PublicConfig {
+	return opts
+}
+
+func GetCfgRedis() *CfgRedis {
+	return &opts.CfgRedis
+}
+
+func GetCfgCommon() *CfgCommon {
+	return &opts.CfgCommon
+}
+
+func GetCfgPlateform() *CfgPlateform {
+	return &opts.CfgPlateform
+}
+
+func GetCfgCenterServers()  map[string]CfgCenterServer {
+	return opts.CfgCenterServer
+}
+
+// 根据serverid获取中心服务器的信息
+func GetCfgCenterServer(ServerID uint32) *CfgCenterServer {
+	for _, v := range opts.CfgCenterServer {
+		if v.ServerID == ServerID {
+			return &v
+		}
+	}
+	return nil
 }
