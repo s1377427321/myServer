@@ -1,0 +1,55 @@
+package protocol;
+
+enum CMD {
+
+//网关模块命令码
+
+    HEARTBEAT                  = 1;  //心跳包。app--->gateway，
+    // 网管和内部服务器消息协议
+	GATEWAY_REGIST_TO_INTERNAL = 100; // 网关注册到内部服务器（游戏服务器，登陆服务器)
+
+    SERVICEREGIST              = 101; //服务注册
+    GATEWAYREGIST              = 105; //网关注册 gateway--->admin_console
+    USERLINEOFFNOTIFY          = 111; //离线通知，gateway--->game server。
+    GATEWAYMIGRATENOTIFY       = 121; //网关迁移通知。centerSvr--->game server
+	UPDATEGAMEUSERSTATUS       = 122; //游戏服通知网关玩家状态
+	
+    CMD_GATEWAY_MAX            = 999; //网关进程分配的CMD最大值。
+
+
+//console进程命令码
+
+    AMPQ_MIN                      = 1501;
+    AMPQTOSINGLEUSER              = 1502; //发送给单个服务器
+    AMPQRECV                      = 1503; //发送给单个
+    AMPQ_REGIST                   = 1504; //服务器注册
+    AMPQ_UNREGIST                 = 1505; //服务器反注册
+
+    AMPQ_APP_SERVER_REGIST        = 1506; //服务器注册
+    AMPQ_APP_SERVER_REGIST_RESULT = 1512; //服务器注册结果
+    AMPQ_APP_SERVER_REGIST_NOTIFY = 1507; //服务器注册通知网关
+
+    AMPQ_ROOM_INFO_NOTIFY         = 1508; //房间信息通知
+
+    AMPQ_FAIL                     = 1509; //服务器转发失败回包
+    AMPQ_MAX                      = 1510;
+
+    DETECT_CURRENT_ROOM           = 1511; //查找玩家当前房间
+	GET_ROOM_PLAYERS              = 1513; //获取房间玩家信息
+    AMPQ_APP_UPDATE_SERVER_INFO   = 1514; //更新服务器信息
+
+    AMPQ_UPDATE_GAME_CONFIG       = 1515; //更新游戏配置信息
+    GET__PLATFORM_PLAYER_COUNT    = 1516; //获取大厅人数
+    KICK_PLAYER_OFFLINE           = 1517; //踢玩家下线
+    UPDATE_REVENUE_INFO           = 1518; //更新游戏中营收信息
+    UPDATE_ROOM_PLAYER_INFO       = 1519; //更新游戏中玩家信息
+    CHANGE_GAME_SERVER_STATUS     = 1520; //修改游戏服务器状态
+    REF_GAME_CONFIG               = 1521; //刷新配置文件
+    UPDATE_SYS_PRIZE_POOL         = 1522; //更新奖池
+	
+	GET_App_ROOMLIST              = 1523; //获取房间列表
+	NOTICE_CHARGE_TO_GS           = 1524; //通知游戏内充值
+
+	CMD_CONSOLE_MAX               = 1999; //console进程分配的CMD最大值。
+
+}

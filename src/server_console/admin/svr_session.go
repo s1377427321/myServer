@@ -21,3 +21,51 @@ type Center4SvrSession struct {
 }
 
 
+/*
+
+type ConnSession interface {
+	OnInit(*Connection)      //初始化操作，比如心跳的设置...
+	OnProcessPack(*PackHead) //处理消息
+	OnClose()                //消除所有对Sessioner的引用,心跳...
+	Write(msg interface{}, ph *PackHead) error
+	Close()
+	OnConnect(isOk bool)
+}
+ */
+
+
+
+//初始化
+func (this *Center4SvrSession) OnInit(c *socket.Connection) {
+	this.connection = c
+}
+
+func (this *Center4SvrSession) OnProcessPack(ph *socket.PackHead) {
+	return  nil
+}
+
+func (this *Center4SvrSession) OnClose() {
+	this.server.RemoveServer(this)
+}
+
+func (this *Center4SvrSession) Write(msg interface{}, ph *socket.PackHead) error {
+	go this.connection.Write(ph, msg)
+	return nil
+}
+
+func (this *Center4SvrSession) OnConnect(isOk bool) {
+
+}
+
+func (this *Center4SvrSession) Close() {
+
+}
+
+
+
+
+
+
+
+
+

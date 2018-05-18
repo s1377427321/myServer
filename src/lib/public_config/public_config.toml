@@ -1,0 +1,32 @@
+# -----------------------------------------center服务器信息
+[CfgCenterServer]
+    [CfgCenterServer.0]
+    ServerID = 1001
+    TcpListenAddr = ":7101"
+    HttpListenAddr = "192.168.1.189:7102"
+
+# -----------------------------------------redis地址端口
+[CfgRedis]
+Address ="127.0.0.1:6379"
+Password ="123456"
+
+# 代理平台参数
+[CfgPlateform]
+# 签名key
+SignKey = "931fc40704a39e28a64ba8579d0cc7be"
+# 代理平台地址
+PaltformAddr ="http://127.0.0.1"
+
+# ---------------------------------------- 公共配置
+[CfgCommon]
+# HTTP请求超时时间 time.Millisecond
+HttpTimeOut = 10000
+# 携带的最大金币数
+MaxCarryGold = 99999999999
+# 携带的最大钻石数
+MaxCarryDiamond = 99999999999
+#随机头像地址
+PersonalRandHeadAddr="http://down.hkrlqp.com/personal/"
+#随机头像区间
+PersonalRandHeadMinSection = 0
+PersonalRandHeadMaxSection = 1714

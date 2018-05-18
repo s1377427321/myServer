@@ -1,0 +1,208 @@
+package protocol;
+
+
+//迁移理由类型
+enum MigrateType{
+    MigrateType_Crash  = 1;
+    MigrateType_Manual = 2;
+}
+
+message GatewayMigrateNotify{
+    optional int32 OriginalServerId    = 1;
+    optional string OriginalServerAddr = 2;
+    optional int32 NewServerId         = 3;
+    optional string NewServerAddr      = 4;
+    optional MigrateType MigrateReason = 5;
+}
+
+message GatewayRegist{
+    optional int32 GatewayID                 = 1;
+    optional string GatewayGameServerAddress = 2;        //服务绑定的地址.
+}
+
+//服务注册
+message MiscSvrRegist{
+    optional int32 ServerId        = 1;
+    optional int32 ServiceType     = 2;
+    optional string ServiceAddress = 3;         //服务绑定的地址.
+    optional int32 AppId           = 4;                   //服务器KEY
+    repeated uint32 Cmd            = 5;                    // 消息类型
+}
+
+
+//服务注册
+message NonCenterSvrRegist{
+    optional int32 ServerId        = 1;
+    optional int32 ServerType      = 2;
+    optional string ServerAddress  = 3;         //服务绑定的地址.
+    optional int32 AppId           = 4;         //服务器Appid
+    optional int32 CodeSectionMin  = 5;         //游戏中房间号生成的ID范围
+    optional int32 CodeSectionMax  = 6;         //
+}
+
+// 服务注册结果
+message NonCenterSvrRegistResult {
+	optional int32 Result           = 1;          // 0:成功 1:serverid 重复 2:id范围重复
+}
+
+// 服务注册通知网关
+message NonCenterSvrRegistNotify {
+    optional int32 ServerId               = 1;
+    optional int32 ServerType             = 2;
+    optional string ServerAddress         = 3;         //服务绑定的地址.
+    optional int32 ServerState            = 4;
+    optional int32 AppId                  = 5;         //服务器Appid
+    optional int32 CodeSectionMin  	      = 6;         //游戏中房间号生成的ID范围
+    optional int32 CodeSectionMax         = 7;         //
+}
+
+// 上报服务器信息（暂时人数）
+message AppUpdateServerInfo {
+	optional uint32 UserCount      = 1; // 玩家人数
+	optional uint32 UserTotalCount = 2; // 总人数
+}
+
+//服务注册
+message AdminTest{
+    optional int32 ServerId     = 1;
+    optional string String      = 2;         //服务绑定的地址.
+}
+
+// 更新console房间信息
+message RoomInfoUpdate {
+	optional uint32 RoomId          = 1;    //房间ID
+	optional uint32 CreateUID       = 2;    //创建者UID
+	optional uint32 RoomType        = 3;    //房间类型
+	optional int32  ServerID        = 4;
+	optional int32  GameID          = 5;
+	repeated uint32 Players         = 6;    //玩家列表
+	optional int32  Operate         = 7;    //1：添加/更新  2：删除
+	optional uint32 ModelKind       = 8;    //二进制位表示的,创建房间模式类型(钻石公：1<<1,钻石私：1<<2,房卡：1<<3)
+	optional string RoomCreateInfo  = 9;    //房间创建信息json格式
+	optional int32  RealPlayerCount = 10;   //真实玩家数量
+}
+
+// 更新console玩家信息
+message PlayerInfoUpdate {
+	optional uint32 RoomId          = 1;    //房间ID
+	optional uint32 RoomType        = 2;    //房间类型
+	optional int32  ServerID        = 3;
+	optional int32  GameID          = 4;
+	optional uint32 Uid             = 5;    //玩家ID
+	optional int32  Operate         = 6;    //1：添加  2：删除
+}
+
+// 更新游戏配置信息
+message UpdateGameConfig {
+	optional int32 AppId   = 1;
+	optional int32 AppType = 2;
+	optional int32 Type    = 3; //更新类型 0：基本配置  1：概率配置   2：指定玩家概率  3：牌型赔率, 4: 玩家概率映射
+	optional uint32 Uid    = 4; //玩家ID
+	optional string Data   = 5;
+}
+
+// 更新游戏中营收信息
+message UpdateRevenueInfo {
+	optional int32  AppID        = 1;
+	optional uint32 AppType      = 2;
+	optional uint32 ServerID     = 3;
+	optional uint32 RoomType     = 4; // 房间类型
+	optional int32  SessionID    = 5; // 场次ID
+	optional int64  SysWinGold   = 6; // 系统输赢值
+	optional int64  RobotWinGold = 7; // 机器人输赢值
+	optional int64  InputGold    = 8; // 投入
+	optional int64  OutputGold   = 9; // 产出
+}
+
+// 检测正在打牌的房间
+message CDetectCurrentRoom {
+	optional uint32 Uid     = 1; //玩家ID
+	optional int32 IsServer = 2; //是否是内部服务器查询
+}
+
+message SDetectCurrentRoom{
+	optional uint32 Uid        = 1;     // 玩家ID
+    optional uint32 InviteCode = 2;     // 0:没有正在打牌的房间;>0:即为房间邀请码
+	optional int32  AppID      = 3;
+	optional int32  ServerID   = 4;
+	optional int32  Type       = 5;
+	optional int32 IsServer    = 6;     //是否是内部服务器查询
+    optional uint32 Error      = 7;     // 错误码
+}
+
+// 获取房间玩家信息
+message CGetRoomPlayers {
+	optional int32  AppID      = 1;
+	optional int32  Type       = 2;
+}
+
+message SGetRoomPlayers {
+	optional uint32 Uid        = 1; // 玩家ID
+	repeated int32 ID          = 2; // 场次ID
+	repeated int32 PlayerCount = 3; // 玩家人数
+}
+
+// 获取大厅人数
+message CGetPlatformPlayers {
+	
+}
+
+message SGetPlatformPlayers {
+	optional uint32 Uid        = 1; // 玩家ID
+	optional int32 PlayerCount = 2; // 玩家人数	
+}
+
+// 踢玩家下线
+message SKickPlayerOffLine {
+	optional uint32 Uid        = 1; // 玩家ID
+	optional int32 Type        = 2; // 类型
+}
+
+// 改变游戏服状态 0:停服 1:开服
+message ChangeGameServer {
+	optional int32 Status = 1; // 0:停服 1:开服
+}
+
+// 刷新配置文件
+message RefGameConfig {
+	optional int32 Type = 1; // 1：刷新活动配置文件
+}
+
+// 更新奖池
+message UpdateSysPrizePool {
+	optional int32  AppID      = 1;
+	optional int32  Type       = 2;
+	optional int64 Prize       = 3;	
+}
+
+// 获取房间列表
+message CGetAppRoomList {
+	optional int32  AppID      = 1;
+	optional int32  Type       = 2;	
+	optional int32  CurPage    = 3;	
+	optional uint32 ModelKind  = 4; //(所有：0[默认],普通模式：1<<4,疯狂模式：1<<5)
+}
+
+// 房间信息
+message AppRoomInfo {
+    optional uint32 InviteCode     = 1; //房间邀请码
+	optional uint32 ModelKind      = 2; //二进制位表示的,创建房间模式类型(钻石公：1<<1,钻石私：1<<2,房卡：1<<3 ......)
+	optional string RoomCreateInfo = 3; //房间创建信息json格式
+	optional int32 PlayerCount     = 4; //玩家人数	
+}
+
+message SGetAppRoomList {
+	optional int32  AppID          = 1; //
+	optional int32  Type           = 2;	//
+	optional int32  CurPage        = 3; // 
+	optional uint32 ModelKind      = 4; //创建房间模式类型 以上将客户端长传的数据返回给客户端
+	repeated AppRoomInfo RoomInfos = 5; //房间列表
+}
+
+message NoticeChargeToGs {
+	required uint32 uid = 1;
+	required int32 chargeType = 2;
+	optional int64 ChargeGold = 3;
+	optional int64 ChargeRoomCard = 4;
+	optional int64 ChargeDiamond = 5;
+}

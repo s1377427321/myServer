@@ -1,0 +1,16 @@
+package protocol;
+
+//网关模块命令码
+enum CMD{
+    HEARTBEAT                  = 1;  //心跳包。app--->gateway，
+    // 网管和内部服务器消息协议
+	GATEWAY_REGIST_TO_INTERNAL = 100; // 网关注册到内部服务器（游戏服务器，登陆服务器)
+
+    SERVICEREGIST              = 101; //服务注册
+    GATEWAYREGIST              = 105; //网关注册 gateway--->admin_console
+    USERLINEOFFNOTIFY          = 111; //离线通知，gateway--->game server。
+    GATEWAYMIGRATENOTIFY       = 121; //网关迁移通知。centerSvr--->game server
+	UPDATEGAMEUSERSTATUS       = 122; //游戏服通知网关玩家状态
+	
+    CMD_GATEWAY_MAX            = 999; //网关进程分配的CMD最大值。
+}

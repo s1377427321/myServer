@@ -1,0 +1,55 @@
+package protocol;
+
+//xiesong@hft
+//3.28.2017
+
+
+message HeartBeat{
+	optional bool InGame = 1; // 正在游戏中
+}
+
+
+//用户在线状态。
+enum UserOnlineStatus{
+    ONLINESTATUS_NULL          = 0;
+    ONLINESTATUS_LOGIN         = 1;
+    ONLINESTATUS_WAIT_CREATE   = 2;
+    ONLINESTATUS_CREATE        = 3;
+    ONLINESTATUS_NORMAL        = 4;
+    ONLINESTATUS_LOGOUT        = 5;
+    ONLINESTATUS_LOGOUT_REPEAT = 6;
+}
+
+enum ServiceType{
+    ServiceType_DBACensus   = 0;
+    ServiceType_Center      = 1;
+    ServiceType_Gateway     = 2;
+    ServiceType_Login       = 3;
+    ServiceType_DBA         = 4;
+    ServiceType_Game        = 5;
+}
+
+//服务注册
+message ServerRegist{
+    optional int32 ServerId        = 1;
+    optional int32 ServiceType     = 2;
+    optional string ServiceAddress = 3;        //服务绑定的地址.
+    optional int32 AppId           = 4;        //服务器KEY
+}
+
+//用户离线通知
+message UserLineOffNotify{
+    optional uint32 UserId = 1; //离线的用户ID
+}
+
+// 网关注册
+message GateWayRegist {
+	optional int32 ServerId = 1;
+}
+
+
+// 游戏服通知网关玩家状态
+message UpdateGameUserStatus{
+    optional uint32 UserId = 1; // 用户ID
+	optional int32 Type    = 2; // 1 : 游戏中 2 : 离开	
+}

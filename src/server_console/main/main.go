@@ -33,4 +33,6 @@ func main()  {
 
 	admin.InitCenterSvr()
 
+	admin.StartListenSvrs()
+
 }

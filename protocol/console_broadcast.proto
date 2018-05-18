@@ -1,0 +1,7 @@
+package protocol;
+
+message BroadcastToSingleUser{
+    optional int32 Cmd        = 1;
+    repeated int32 targets    = 2;
+    optional bytes PackBinary = 3;
+}
