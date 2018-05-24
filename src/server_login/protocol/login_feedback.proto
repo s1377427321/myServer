@@ -1,0 +1,13 @@
+package protocol;
+
+// CFeedback 反馈
+message CFeedBack {
+    optional string Content = 1; // 反馈内容
+    optional uint32 Type    = 2; // 反馈类型, 0：建议 ，1：bug
+    optional string Photo   = 3; // 截图连接地址
+}
+
+// SFeedback 反馈
+message SFeedBack {
+    optional uint32 Error = 1; // 状态码
+}

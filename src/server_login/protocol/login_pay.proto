@@ -1,0 +1,94 @@
+package protocol;
+
+//输入邀请码
+message CInviteCode {
+    optional uint32 Appid      = 1; // 应用ID
+    optional uint32 Uid        = 2; // 玩家ID，5-10位
+    optional uint32 InviteCode = 3; // 邀请码，5-10位
+    optional string Sign       = 4; // 签名
+}
+
+//输入邀请码响应
+message SInviteCode {
+    optional uint32 State   = 1; // 平台返回状态码
+    optional uint32 Uid     = 2; // 玩家ID，5-10位
+    optional uint32 Player  = 3; // 玩家（被邀请人）-赠送物品数量，如：房卡
+    optional uint32 Inviter = 4; // 邀请人-赠送物品数量，如：房卡
+    optional string Sign    = 5; // 签名
+}
+
+//查询邀请码
+message CInviteCodeQuery {
+    optional uint32 Appid = 1; // 应用ID
+    optional uint32 Uid   = 2; // 玩家ID，5-10位
+}
+
+//查询邀请码响应
+message SInviteCodeQuery {
+    optional uint32 State    = 1; // 平台返回状态码
+    optional bool IsInputted = 2; // 是否输入过邀请码,true表示已输入。玩家玩的每一款游戏都要输入且仅输入一次
+    optional uint32 Role     = 3; // 玩家类型ID。如：只有代理可以赠送房间
+}
+
+
+//商品列表
+message CProducts {
+    optional uint32 Appid = 1; // 应用ID
+}
+
+//商品列表响应
+message SProducts {
+    optional uint32 State = 1; // 平台返回状态码
+    optional string List  = 2; // 商品列表，JSON格式。当state=1时有返回
+    optional string Info  =3; // 相当于代理平台的message
+}
+
+//下单
+message CPay {
+    optional uint32 Appid     = 1; // 应用ID
+    optional uint32 Uid       = 2; // 玩家ID，5-10位
+    optional uint32 Productid = 3; // 商品编号
+    optional uint32 PF        = 4; // 平台ID(微信/QQ)
+    optional string Sign      = 5; // 签名
+}
+
+//下单
+message SPay {
+    optional uint32 State     = 1; // 平台返回状态码
+    optional string Tradeno   = 2; // 商户订单号
+    optional string Partnerid = 3; // 商户号，微信支付分配的商户号
+    optional string Prepayid  = 4; // 预支付交易会话ID，微信返回的支付交易会话ID
+    optional string Noncestr  = 5; // 随机字符串，不长于32位
+    optional string Timestamp = 6; // 时间戳
+    optional string Sign      = 7; // 签名，传输给微信，客户端不需要验证
+    optional string Sign2     = 8; // 签名2，一定要验证签名，防止非法数据造成资金损失。
+}
+
+//支付查询
+message COrderQuery {
+    optional uint32 Appid   = 1; // 应用ID
+    optional uint32 Uid     = 2; // 玩家ID，5-10位
+    optional string Tradeno = 3; // 订单号
+    optional uint32 PF      = 4; // 平台ID(微信/QQ)
+    optional string Sign    = 5; // 签名
+}
+
+//支付查询响应
+message SOrderQuery {
+    optional uint32 State         = 1; // 平台返回状态码
+    optional uint32 Appid         = 2; // 应用ID/游戏ID
+    optional uint32 Uid           = 3; // 玩家ID
+    optional double Paymoney      = 4; // 订单总价，单位为元，固定保留2位小数，如：10.00
+    optional string Tradeno       = 5; // 商户订单号
+    optional string Transactionid = 6; // 支付订单号
+    optional string Paytime       = 7; // 支付时间，格式：yyyy-MM-dd HH:mm:ss
+    optional uint32 Num           = 8; // 商品数量，如：房卡
+    optional string Sign          = 9; // 签名，传输给微信，客户端不需要验证
+}
+
+//房卡变动推送
+message SRoomCardChange {
+    optional uint32 Error = 1; // 平台返回状态码
+    optional int32 Value  = 2; //变化房卡数值
+    optional uint32 Left  = 3; //变化后的房卡
+}

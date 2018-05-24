@@ -1,0 +1,64 @@
+package protocol;
+
+import "login_objs.proto";
+
+message CVerifyToken {
+    optional string Data  = 1; // 平台获取的json数据
+    optional uint32 Appid = 2; // 应用ID
+    optional string IP    = 3; //登陆客户端IP
+    optional uint32 Device  = 4; // 登录终端(安卓/IOS)
+    optional string MacAddr = 5; //Mac地址
+}
+
+//验证响应
+message SVerifyToken {
+    optional ProtoUser Data     = 1; // 玩家的详细数据
+	optional bool IsOtherOnline = 2; // 是否在其他设备上线
+    optional uint32 State       = 3; // 状态码
+    optional uint32 RoomId      = 4; // 房卡id
+}
+
+//三方登录请求
+message CLogin {
+    optional uint32 Appid   = 1; // 应用ID
+    optional uint32 PF      = 2; // 登录平台(微信/QQ)
+    optional uint32 Device  = 3; // 登录终端(安卓/IOS)
+    optional string Account = 4; // 第三方帐号
+    optional string Token   = 5; // 第三方认证token
+    optional string IP      = 6; //登陆客户端IP
+    optional string MacAddr = 7; //Mac地址
+}
+
+//游客登录请求
+message CGuestLogin {
+    optional uint32 Appid    = 1; // 应用ID
+    optional string DeviceId = 2; // 设备唯一标识，不长于64位
+    optional uint32 Device   = 3; // 登录终端(安卓/IOS)
+    optional string Sign     = 4; // 签名
+    optional string IP       = 5; //登陆客户端IP
+    optional string MacAddr = 6; //Mac地址
+}
+
+//登录响应
+message SLogin {
+    optional uint32 State   = 1; // 平台返回状态码
+    optional ProtoUser Data = 2; // 玩家的详细数据
+    optional string Token   = 3; // 令牌
+}
+
+//再次登录请求
+message CVerifyToken1 {
+    optional uint32 Appid  = 1; // 应用ID
+    optional uint32 Uid    = 2; // 玩家ID，5-10位
+    optional string Token  = 3; // 令牌
+    optional uint32 Device = 4; // 登录终端(安卓/IOS)
+    optional string IP     = 5; //登陆客户端IP
+    optional string MacAddr = 6; //Mac地址
+}
+
+// 挤号
+message SForceOutUser {
+    optional uint32 Uid    = 1; // 玩家ID
+	optional string IP     = 2; // 登陆玩家IP
+	optional string City   = 3; // 登陆玩家所在城市
+}

@@ -1,0 +1,29 @@
+package protocol;
+
+//xiesong@hf@5.3.2017.
+//登陆服务器的命令码枚举
+enum CMD{
+    // 登录服协议
+    LOGIN                      = 1000; // 登录消息
+    GUEST_LOGIN                = 1001; // 游客登录
+    VERI_TOKEN                 = 1002; // token验证
+    FEED_BACK                  = 1003; // feed back 反馈
+    USER_DATA                  = 1004; // 获取玩家详细数据
+    LESS_USER_DATA             = 1005; // 获取常用简单的玩家数据
+    INVITECODE                 = 1006; // 支付-输入邀请码
+    INVITECODEQUERY            = 1007; // 支付-查询邀请码
+    PRODUCTS                   = 1008; // 支付-商品列表
+    PAY                        = 1009; // 支付-下单
+    ORDERQUERY                 = 1010; // 支付-查询
+    NOTICE                     = 1011; // 公告
+    MASSAGE                    = 1012; // 服务器主动推送消息
+    GET_UPPER_INFO             = 1013; // 查询-上级微信号、UID
+    ROLLING_SUBTITLE           = 1014; // 跑马灯信息
+    ROOMCARD_CHANGE            = 1015; // 房卡变动推送
+    DELIVER_GOODS              = 1016; // 发货成功
+	FORCE_USER_OUT             = 1017; // 挤号
+	PUSH_MESSAGE               = 1018; // 推送消息
+	CHANGE_USER_DATA           = 1019; // 玩家数据改变
+	
+    SERVER_LOGIN_BOUNDARY_MAX  = 1500; // 命令码小于1000,转到登录服务器
+}

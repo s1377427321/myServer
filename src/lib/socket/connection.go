@@ -10,6 +10,30 @@ import (
 	"encoding/binary"
 	"errors"
 	"sync/atomic"
+	"time"
+	"fmt"
+)
+
+const (
+	StateInit = iota
+	StateConnected
+	StateManualClosed
+	StateClose
+	StateConnecting
+	StateHalt
+
+)
+
+const maxSendBufferSize int = 10240
+
+type OutConns struct {
+	connMap map[string]*Connection	// key:peer address
+	sync.Mutex
+}
+
+var(
+	outConns *OutConns
+	connId uint32
 )
 
 type ConnSession interface {
@@ -40,6 +64,47 @@ type Conner interface {
 	StartConnection(rwc *net.Conn) bool
 	SetSession(ConnSession)
 }
+
+func CreateConnection(addr string, is_server bool, is_center_server bool, session ConnSession) *Connection {
+	conn := &Connection{
+		is_server:        is_server,
+		is_center_server: is_center_server,
+		addr_:            addr,
+		hdBuf: make([]byte, PackHeadLength),
+	}
+
+	if session != nil {
+		conn.SetSession(session)
+		atomic.StoreInt32(&conn.state, StateInit)
+		conn.Id = AllocConnId()
+
+		Add2OutConnMap(conn)
+	}
+
+	return conn
+}
+
+func Add2OutConnMap(conn *Connection) {
+	outConns.Lock()
+	defer outConns.Unlock()
+
+	k := GenConnKey(conn)
+
+	_, exists := outConns.connMap[k]; if exists {
+		beego.Warn("The key:", k, "has ever exists!")
+	} else {
+		outConns.connMap[k] = conn
+	}
+}
+
+func GenConnKey(conn *Connection) string{
+	return fmt.Sprintf("%s%_%d", conn.addr_, conn.Id)
+}
+
+func AllocConnId() uint32 {
+	return atomic.AddUint32(&connId, 1)
+}
+
 
 func (this *Connection) SetSession(s ConnSession) {
 	if s == nil {
@@ -93,8 +158,76 @@ func (this *Connection) readLoop() {
 			return
 		}
 
-
+		this.DispatchMsg(pack)
 	}
+}
+
+func (this *Connection)DispatchMsg(pack *PackHead) {
+	if pack == nil {
+		beego.Error("Inside DispatchMsg, pack is nil!")
+		return
+	}
+	if this.session == nil {
+		beego.Error("Inside DispatchMsg, this.session is nil!")
+		return
+	}
+
+	this.session.OnProcessPack(pack)
+
+}
+
+func (this *Connection) Write(ph *PackHead, msg interface{}) error{
+	_, data, err := SerializePackWithPB(ph, msg, maxSendBufferSize)
+
+	if err != nil {
+		beego.Error("Inside Connection.Write(), SerializePackWithPB failed!")
+		return err
+	}
+
+	if err = this.WriteData(data); err != nil {
+		beego.Error(err)
+		return err
+	}
+
+	return  nil
+}
+
+func (this *Connection) WriteData(msg []byte) error {
+	var retErr error
+
+	defer func() {
+		if retErr != nil && this.rwc != nil {
+			(*this.rwc).Close()
+		}
+	}()
+
+
+	if this.rwc == nil {
+		retErr = errors.New("Inside Connection.WriteData(), rwc is nil!")
+		beego.Error(retErr)
+		return retErr
+	}
+
+	retErr = (*this.rwc).SetWriteDeadline(time.Now().Add(500 * time.Millisecond))
+	if retErr != nil {
+		beego.Error(retErr)
+		return retErr
+	}
+
+	var n int
+	n, retErr = (*this.rwc).Write(msg)
+	if retErr != nil {
+		beego.Error(retErr)
+		return retErr
+	}
+
+	if n != len(msg) {
+		retErr = errors.New("Only partial data written!")
+		beego.Error(retErr)
+		return retErr
+	}
+
+	return nil
 }
 
 func (this *Connection) readPck() (*PackHead, error){
@@ -120,5 +253,34 @@ func (this *Connection) readPck() (*PackHead, error){
 	return hd, nil
 }
 
+
+//is_manual_close 主动关闭，如果是主动关闭，则不重连。
+func (this *Connection) Stop(is_manual_close bool) {
+
+	//this.Lock()
+	//defer this.Unlock()
+
+	//beego.Info("Stop,remoteAddr", this.remoteAddr, "state:", this.state, "is_manual_close:", is_manual_close)
+	if is_manual_close {
+		if !atomic.CompareAndSwapInt32(&this.state, StateConnected, StateManualClosed) {
+			//beego.Info("手动关闭连接原子更新失败。。。逻辑bug,state:", this.state)
+			return
+		}
+	} else {
+		if !atomic.CompareAndSwapInt32(&this.state, StateConnected, StateInit) {
+			//beego.Info("非主动关闭连接，原子更新失败。。。逻辑bug,state:", this.state)
+			return
+		}
+	}
+	//close(this.CloseChan)
+	if this.rwc != nil {
+		(*this.rwc).Close()
+	}
+	if this.session != nil && !is_manual_close {
+		go this.session.OnClose()
+	}
+	//this.SetIsConn(false)
+	//this.IsConnected = false
+}
 
 

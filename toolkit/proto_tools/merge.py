@@ -48,7 +48,7 @@ def get_protocol_files(rootDir,fileregs,isfind):
 def merge_cmd():
     file_lists = [
 	"../../src/server_gateway/protocol/gateway_cmd.proto",
-    #            "../../src/server_login/protocol/login_cmd.proto",
+                "../../src/server_login/protocol/login_cmd.proto",
 	#			  "../../src/server_dba/protocol/dba_cmd.proto",
     #             "../../src/game_protocol/game_cmd.proto",
 	#		      "../../src/server_game_hall/protocol/game_hall_cmd.proto",
@@ -76,13 +76,14 @@ def merge_cmd():
 
 def merge_status_code():
     buffer = "package protocol;\n\nenum StatusCode{\n"
-    code_lists = ["../../src/server_login/protocol/login_code.proto",
+    code_lists = [
+	"../../src/server_login/protocol/login_code.proto",
 				  "../../src/game_protocol/game_code.proto",
-				  "../../src/match/protocol/game_match_code.proto",
+	#			  "../../src/match/protocol/game_match_code.proto",
 				]
-    protofiles = get_protocol_files("../../src/server_games/",["code.proto"],True)
-    for filename in protofiles:
-        code_lists.append(filename)
+ #   protofiles = get_protocol_files("../../src/server_games/",["code.proto"],True)
+ #   for filename in protofiles:
+ #       code_lists.append(filename)
     for files in code_lists:
         # print (files)
         temp = read_file(files)
@@ -110,7 +111,7 @@ def copy_other_file():
     # print ("copy other files")
     dirs = [
 	"../../src/server_gateway/protocol/",
-     #       "../../src/server_login/protocol/",
+            "../../src/server_login/protocol/",
 		#	"../../src/server_dba/protocol/",
      #       "../../src/game_protocol/",
      #       "../../src/match/protocol/",
@@ -145,8 +146,8 @@ if __name__ == '__main__':
     copy_config()
     print ("merge command")
     merge_cmd()
-#    print ("merge status code")
-#    merge_status_code()
+    print ("merge status code")
+    merge_status_code()
     print ("copy file.")
     copy_other_file()
     print (u"merge finished ok")

@@ -1,0 +1,8 @@
+
+
+enum CMD{
+    //房间公共协议
+	GAME_CREATE_ROOM        = 2501; //  创建房间
+    GAME_ENTER_ROOM         = 2502; //  匹配并进入房间
+    NOTICE_PLAYER_INFO      = 2503; //  通知玩家信息(到客户端)
+}

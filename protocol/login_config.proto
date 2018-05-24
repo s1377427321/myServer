@@ -1,0 +1,9 @@
+package protocol;
+
+// 游戏全局配置
+message CGlobal {
+}
+message SGlobal {
+    optional uint32 Error       = 1; // 平台返回状态码
+    optional uint32 GameTimeout = 2; // 出牌倒计时单位秒
+}

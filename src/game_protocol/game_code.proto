@@ -1,0 +1,22 @@
+package protocol;
+//所有游戏公共命令码(20000 ~ 21000)
+enum StatusCode{
+    //房间错误码
+    OPERATE_IELLEGAL          			= 20000; //非法操作
+    GAME_STARTED_CANNOT_LEAVE 			= 20001; // 正在牌局中不能离开
+    USER_DATA_ERROR           			= 20004; // 玩家数据为空
+    NOT_IN_ROOM               			= 20007; // 你不在房间,针对房间的一切操作无效
+
+    //创建房间
+    CREAT_ROOM_FAIL                     = 20009; // 创建房间失败
+	CREAT_ROOM_FAIL_IN_ROOM             = 20096; // 在房间中创建房间失败
+	CREAT_ROOM_FAIL_DIAMOND_NOT_ENOUGH  = 20097; // 钻石不够创建房间失败
+	CREAT_ROOM_FAIL_ROOMCARD_NOT_ENOUGH = 20098; // 房卡不够创建房间失败
+    STOP_GAME_SERVERING                 = 20099; // 游戏不能进入(停服中)
+    //进入房间
+    ROOM_FULL                           = 20011; // 房间已满
+    ROOM_NOT_EXIST            			= 20012; // 房间不存在
+	USER_GOLD_NOT_ENOUGH      			= 20013; // 金币不够
+	USER_DIAMOND_NOT_ENOUGH   			= 20014; // 钻石不够
+    GET_ROOM_LIST_FAIL        			= 20050; // 获取房间列表失败
+}

@@ -1,0 +1,53 @@
+
+// 公共协议
+package protocol;
+
+// 创建房间
+message CGameCreateRoom {
+	optional int32  AppID                 = 1;
+	optional int32  Type                  = 2;
+	optional string RoomData              = 3; //创建的数据json格式
+}
+
+message SGameCreateRoom {
+	optional int32  AppID                 = 1;
+	optional int32  Type                  = 2;	
+    optional uint32 InviteCode            = 3; //房间邀请码	
+    optional uint32 Error                 = 4; //错误码
+	optional string RoomData              = 5; //房间的数据json格式
+}
+
+// 进入指定房间，断线重连进入房间也要调用本协议
+message CGameEnterRoom {
+    optional uint32 InviteCode = 1; //房间邀请码
+}
+
+message SGameEnterRoom {
+	optional int32  AppID         = 1;
+	optional int32  Type          = 2;		
+    optional uint32 Error         = 3; //错误码
+	optional string RoomData      = 4; //房间的数据json格式
+	optional uint32 InviteCode    = 5; //房间邀请码
+}
+
+// 通知网关玩家所在的游戏信息
+message NoticePlayerGameInfo {
+	optional int32  AppID         = 1;
+	optional int32  Type          = 2;
+    optional uint32 Uid           = 3; //玩家uid
+    optional uint32 InviteCode    = 4; //房间邀请码		
+}
+
+enum NOTICE_PLAYER_TYPE {
+	chargeGold  = 1;
+	chargeRoomCard = 2;
+	chargDiamond = 3;
+}
+
+message SNoticePlayerInfo {
+    required int32 type = 1;  // 通知操作
+    required uint32 seat = 2;
+    optional int64 carrryGold = 3;
+    optional int64 roomCard = 4;
+    optional int64 carryDiamond = 5;
+}

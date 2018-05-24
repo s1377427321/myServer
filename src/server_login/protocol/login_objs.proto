@@ -1,0 +1,64 @@
+package protocol;
+
+// 玩家常用的数据
+message LessUserData
+{
+    optional uint32 Uid      = 1; // 用户账号
+    optional string NickName = 2; // 昵称
+    optional uint32 RoomCard = 3; // 房卡
+    optional string Icon     = 4; // 头像
+    optional uint32 Sex      = 5; // 性别
+}
+
+
+//登录平台(微信/QQ)
+enum PF {
+    WECHAT = 1; //微信
+}
+
+
+//玩家类型ID
+enum PlayerRole {
+    Player        = 0; //0-玩家
+    SpecialAgent  = 1; //1-特级代理
+    OneLevelAgent = 2; //2-一级代理
+    TwoLevelAgent = 3; //3-二级代理
+}
+
+
+// 玩家的详细数据
+message ProtoUser
+{
+    optional uint32 Uid          = 1;//用户账号
+    optional string NickName     = 2;//昵称
+    optional string Weixin       = 3;// 微信号
+    optional uint32 Seat         = 4;//座位号
+    optional uint32 Sex          = 5;//用户性别,男1 女2 非男非女0
+    optional string Photo        = 7;//头像地址
+    optional string Address      = 8;//真实物理地址
+    optional string IP           = 9;//IP 地址
+    optional string Terminal     = 10;// 终端类型
+    optional uint32 RoomCard     = 12;//房卡
+    optional bool Ready          = 13;//玩家de准备状态
+    optional uint32 InviteCode   = 14;//房间的邀请码
+    optional int32 Score         = 15;//玩家牌局中的分值
+    optional bool IsInputted     = 16; // 是否输入过邀请码,true表示已输入。玩家玩的每一款游戏都要输入且仅输入一次
+    optional uint32 Role         = 17; // 玩家类型ID。如：只有代理可以赠送房间 (修改为 如果不是机器人 则为1， 否则为0  暂时)
+    optional bool IsSporting     = 18; // 是否有新活动，true则竞技场按钮右上角显示小红点
+    optional string Weixinno     = 19;// 上级微信号
+    optional uint32 Upperid      = 20;// 上级玩家ID*
+	optional int64  Gold         = 21;//金币
+	optional int64  CarryGold    = 22;//携带金币
+	optional int64  SafeGold     = 23;//保险柜金币
+	optional int64 Diamond       = 24; // 钻石
+	optional int64  CarryDiamond = 25;//携带钻石
+	optional int64 SafeDiamond   = 26; // 保险柜钻石
+	optional string  LoginTypes  = 27;//登录方式
+	optional int64  MatchCoin    = 28;//比赛场金币
+	optional bool IsAgent        = 29;// 是否是代理玩家
+    optional bool IsChooseSeat   = 30;//是否已经选坐
+    optional int32 IsSuper       = 31;//是否是超級用戶
+    optional uint32 Coupons      = 32; // 礼券
+    optional string Description  = 33; // 个性签名
+    optional string Phone        = 34; // 绑定手机号
+}

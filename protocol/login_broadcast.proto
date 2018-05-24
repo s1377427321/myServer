@@ -1,0 +1,49 @@
+package protocol;
+
+//公告
+message CNotice {
+    optional uint32 Appid  = 1; // 应用ID
+    optional uint32 Typeid = 2; // 类型 1-主动弹出列表 2-历史公告列表
+    optional uint32 Uid    = 3; // 玩家ID，5-10位
+}
+
+//公告响应
+message SNotice {
+    optional uint32 State = 1; // 平台返回状态码
+    optional string Data  = 2; // 名单列表，JSON格式。当state=1时有返回
+}
+
+
+
+// 获取跑马灯信息,每次切换到大厅请求一次数据
+message CRollingSubtitle {
+}
+
+message SRollingInfo {
+	optional int32 ID            = 1;
+	optional string Content      = 2;
+	optional string ValidendTime = 3; // 失效时间
+	optional int32 Frequency     = 4; // 频率
+}
+
+// 返回跑马灯信息
+message SRollingSubtitle {
+    optional uint32 Error              = 1;
+    repeated SRollingInfo RollingInfos = 2; // 马灯信息，是个数组
+    //repeated string Content = 2; // 马灯信息，是个数组
+}
+
+
+// 推送消息
+message SPushMessage {
+	optional int32  Uid          = 1; // 玩家ID 
+	optional uint32 Type         = 2; // 系统消息 用户消息 滚动消息
+	optional int32  ID           = 3; // 消息ID 
+	optional string Title        = 4; // 消息标题
+	optional int64  Gold         = 5; // 现有金币 
+	optional int64  CarryGold    = 6; // 携带金币 
+	optional int64  SafeGold     = 7; // 保险柜金币 
+	optional int32  RoomCard     = 8; // 房卡
+	optional string ValidendTime = 9; // 失效时间
+	optional int32 Frequency     = 10; // 频率
+}

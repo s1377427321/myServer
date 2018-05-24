@@ -1,0 +1,14 @@
+package protocol;
+
+// 获取上级代码信息
+message CGetUpperInfo {
+    optional uint32 Appid = 1; // 应用ID
+    optional uint32 Uid   = 2; // 玩家ID，5-10位
+}
+
+//  获取上级代码信息
+message SGetUpperInfo {
+    optional uint32 State    = 1; // 平台返回状态码
+    optional string Weixinno = 2; // 上级微信号
+    optional uint32 Upperid  = 3; // 上级玩家ID
+}

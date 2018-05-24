@@ -8,6 +8,8 @@ import(
 	"lib/public_config"
 	"lib/db"
 	"server_console/admin"
+	"time"
+	"server_console/cheat"
 )
 
 func InitLog()  {
@@ -34,5 +36,15 @@ func main()  {
 	admin.InitCenterSvr()
 
 	admin.StartListenSvrs()
+
+	admin.StartReportSvrInfo2Platform()
+
+	admin.StartOnlineLog()
+
+	cheat.StartCheat()
+
+	for {
+		time.Sleep(100 * time.Minute)
+	}
 
 }

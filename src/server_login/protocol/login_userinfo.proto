@@ -1,0 +1,44 @@
+package protocol;
+import "login_objs.proto";
+
+// 获取玩家详细数据
+message CUserData {
+    optional uint32 Uid = 1; // 玩家Uid
+}
+
+// 获取玩家详细数据
+message SUserData {
+    optional uint32 Error          = 1; // 状态码
+    optional uint32 Uid            = 2; // 玩家Uid
+    optional string Nickname       = 3; // 昵称
+    optional uint32 Sex            = 4; // 性别
+    optional string Icon           = 5; // 头像
+    optional string Lastloginip    = 6; // 最后一次登陆IP地址
+    optional uint32 Parentuid      = 7; // 上级 uid
+    optional string Parentwechatid = 8; // 上级微信号
+}
+
+// 获取玩家常用数据
+message CLessUserData {
+    optional uint32 Uid = 1; // 玩家Uid
+}
+
+// 获取玩家简单的数据
+message SLessUserData {
+    optional uint32 Error      = 1; // 状态码
+    optional LessUserData Data = 2; // 玩家信息
+}
+
+
+// 玩家信息改变推送
+message SChangeUserData {
+    optional uint32 Uid          = 1; // 玩家Uid	
+	optional int64  Gold         = 2; // 当前金币
+	optional int64  CarryGold    = 3; // 携带金币 
+	optional int64  SafeGold     = 4; // 保险柜金币 
+	optional int64  CarryDiamond = 5; // 携带钻石
+	optional int32  RoomCard     = 6; // 房卡
+	optional bool   IsAgent      = 7; // 是否是代理玩家
+	optional int64  Diamond      = 8; // 钻石
+	optional int64  SafeDiamond  = 9; // 保险柜钻石
+}
