@@ -1,8 +1,8 @@
 package conf
 
 import (
-	"lib/common"
 	"github.com/BurntSushi/toml"
+	"lib/common"
 )
 
 type CfgServer struct {
@@ -13,13 +13,14 @@ type CenterConfig struct {
 	CfgLog common.CfgLog
 	CfgServer CfgServer
 }
-var(
+
+var (
 	CenterCfg CenterConfig
 )
 
-func ReadConf(file string)  {
-	_,err:=toml.DecodeFile(file,&CenterCfg)
-	if err != nil{
+func ReadConf(file string) {
+	_, err := toml.DecodeFile(file, &CenterCfg)
+	if err != nil {
 		panic(err)
 	}
 }

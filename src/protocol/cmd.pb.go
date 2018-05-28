@@ -47,6 +47,10 @@ const (
 	CMD_PUSH_MESSAGE                  CMD = 1018
 	CMD_CHANGE_USER_DATA              CMD = 1019
 	CMD_SERVER_LOGIN_BOUNDARY_MAX     CMD = 1500
+	CMD_DBA_MIN                       CMD = 3000
+	CMD_DBA_REQ_MSG                   CMD = 3001
+	CMD_DBA_ACKMSG                    CMD = 3002
+	CMD_DBA_MAX                       CMD = 4000
 	CMD_AMPQ_MIN                      CMD = 1501
 	CMD_AMPQTOSINGLEUSER              CMD = 1502
 	CMD_AMPQRECV                      CMD = 1503
@@ -104,6 +108,10 @@ var CMD_name = map[int32]string{
 	1018: "PUSH_MESSAGE",
 	1019: "CHANGE_USER_DATA",
 	1500: "SERVER_LOGIN_BOUNDARY_MAX",
+	3000: "DBA_MIN",
+	3001: "DBA_REQ_MSG",
+	3002: "DBA_ACKMSG",
+	4000: "DBA_MAX",
 	1501: "AMPQ_MIN",
 	1502: "AMPQTOSINGLEUSER",
 	1503: "AMPQRECV",
@@ -160,6 +168,10 @@ var CMD_value = map[string]int32{
 	"PUSH_MESSAGE":                  1018,
 	"CHANGE_USER_DATA":              1019,
 	"SERVER_LOGIN_BOUNDARY_MAX":     1500,
+	"DBA_MIN":                       3000,
+	"DBA_REQ_MSG":                   3001,
+	"DBA_ACKMSG":                    3002,
+	"DBA_MAX":                       4000,
 	"AMPQ_MIN":                      1501,
 	"AMPQTOSINGLEUSER":              1502,
 	"AMPQRECV":                      1503,

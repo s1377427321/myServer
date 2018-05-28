@@ -1,0 +1,26 @@
+# -------------------------------------------log configuration
+#const (
+	#LevelEmergency = iota
+	#LevelAlert
+	#LevelCritical
+	#LevelError
+	#LevelWarning
+	#LevelNotice
+	#LevelInformational
+	#LevelDebug
+#)
+
+[CfgLog]
+LogDir = "log"
+LogFileName = "gateway"
+LogToConsole = true
+LogLevel = 6
+
+# ---------------------------------------- 网关服务器配置
+[CfgGatewayServer]
+AppServerIPV6Address = ""
+AppServerAddress = "192.168.1.189:7201"
+ServerID = 2001
+ServerType = 2
+NetIP = 0
+IPDataPath = "../data/qqwry.dat"

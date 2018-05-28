@@ -32,13 +32,6 @@ type ConnSession interface {
 
  */
 
-func (this *Svr4SvrSession) Close() {
-	this.connection.SetIsConn(false)
-	this.connection.Stop(true)
-	if this.serverID != 0 {
-		this.server.RemoveGateway(this.serverID)
-	}
-}
 
 //初始化
 func (this *Svr4SvrSession) OnInit(c *socket.Connection) {

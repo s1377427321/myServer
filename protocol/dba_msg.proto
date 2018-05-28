@@ -1,0 +1,27 @@
+package protocol;
+
+enum DBASqlType{
+    Select_NoReturn = 0; // 查（只查询无返回）
+    Select          = 1; // 查
+    Update          = 2; // 更
+    Insert          = 3; // 增
+    Delete          = 4; // 删
+}
+
+// 和数据服务器之间 操作数据库
+message DBAServerReqMsg {
+    optional int64 EventID = 1;//操作的事件ID， 会在 DBServerAckMsg 中返回
+	optional int32 Type    = 2;//执行sql语句类型 ()
+	optional string SqlStr = 3;//执行的sql语句
+}
+
+message DBARow{
+	repeated string ColData = 1; //每一列的数据
+}
+
+// 和数据服务器之间 操作数据库 返回相应信息,
+message DBAServerAckMsg {
+    optional int64 EventID = 1;//操作的事件ID
+	repeated DBARow DBARow = 2;
+    optional int64 Error   = 3;//错误码
+}

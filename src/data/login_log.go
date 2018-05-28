@@ -3,6 +3,7 @@ package data
 import (
 	"time"
 	"fmt"
+	"lib/dbagent"
 )
 
 type PfGameOnlineLog struct {

@@ -1,0 +1,20 @@
+# -------------------------------------------log configuration
+#const (
+	#LevelEmergency = iota
+	#LevelAlert
+	#LevelCritical
+	#LevelError
+	#LevelWarning
+	#LevelNotice
+	#LevelInformational
+	#LevelDebug
+#)
+
+[CfgLog]
+LogDir = "log"
+LogFileName = "center"
+LogToConsole = true
+LogLevel = 6
+
+[CfgServer]
+ServerID = 1001

@@ -36,6 +36,35 @@ var(
 	connId uint32
 )
 
+func MaintainOutConns()  {
+	outConns = &OutConns{}
+	outConns.connMap = make(map[string]*Connection)
+
+	go func() {
+		for range time.NewTicker(time.Duration(2) * time.Second).C {
+			checkConnsState()
+		}
+	}()
+}
+
+func checkConnsState() {
+	outConns.Lock()
+	defer outConns.Unlock()
+
+	for _, conn := range outConns.connMap {
+		connState := atomic.LoadInt32(&conn.state)
+		switch connState {
+		case StateInit:
+			fallthrough
+		case StateClose:
+			go conn.Connect(5*time.Second)
+		case StateConnected:
+		case StateConnecting:
+		case StateHalt:
+		}
+	}
+}
+
 type ConnSession interface {
 	OnInit(*Connection)      //初始化操作，比如心跳的设置...
 	OnProcessPack(*PackHead) //处理消息
@@ -252,6 +281,46 @@ func (this *Connection) readPck() (*PackHead, error){
 
 	return hd, nil
 }
+
+func (this *Connection) Connect(timeout time.Duration) bool {
+	atomic.StoreInt32(&this.state, StateConnecting)
+
+	beego.Warn("Try connect to host:", this.addr_, "....")
+
+	var (
+		err error
+		rw net.Conn
+	)
+
+	defer func() {
+		if err != nil {
+			atomic.StoreInt32(&this.state, StateClose)
+		} else {
+			atomic.StoreInt32(&this.state, StateConnected)
+		}
+	}()
+
+	rw, err = net.DialTimeout("tcp", this.addr_, timeout)
+	if err != nil {
+		beego.Error(err)
+		this.session.OnConnect(false)
+		return false
+	} else {
+		beego.Warn("Connect to host:", this.addr_, "success!")
+	}
+
+	if rw.(*net.TCPConn) != nil {
+		rw.(*net.TCPConn).SetKeepAlive(false)
+		rw.(*net.TCPConn).SetLinger(0)
+	}
+
+	this.StartConnection(&rw)
+
+	this.session.OnConnect(true)
+
+	return true
+}
+
 
 
 //is_manual_close 主动关闭，如果是主动关闭，则不重连。

@@ -49,7 +49,7 @@ def merge_cmd():
     file_lists = [
 	"../../src/server_gateway/protocol/gateway_cmd.proto",
                 "../../src/server_login/protocol/login_cmd.proto",
-	#			  "../../src/server_dba/protocol/dba_cmd.proto",
+				  "../../src/server_dba/protocol/dba_cmd.proto",
     #             "../../src/game_protocol/game_cmd.proto",
 	#		      "../../src/server_game_hall/protocol/game_hall_cmd.proto",
                   "../../src/server_console/protocol/console_cmd.proto",
@@ -112,7 +112,7 @@ def copy_other_file():
     dirs = [
 	"../../src/server_gateway/protocol/",
             "../../src/server_login/protocol/",
-		#	"../../src/server_dba/protocol/",
+			"../../src/server_dba/protocol/",
      #       "../../src/game_protocol/",
      #       "../../src/match/protocol/",
 	#		"../../src/server_game_hall/protocol/",

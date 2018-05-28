@@ -1,0 +1,9 @@
+package protocol;
+
+//dba进程命令码
+enum CMD{
+    DBA_MIN                      = 3000;
+	DBA_REQ_MSG                  = 3001;
+    DBA_ACKMSG                   = 3002;
+	DBA_MAX                      = 4000; //dba进程分配的CMD最大值。
+}
